@@ -1,0 +1,37 @@
+name: GitHub Actions Build and Deploy
+
+on:
+  # 触发此流程的动作
+  push:
+    branches:
+      # 触发此流程的分支名称
+      - master
+
+permissions:
+  # 仓库内容写权限（GitHub会创建一个默认的 GITHUB_TOKEN）
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 安装 Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+
+    - name: 拉取项目 🛎️
+      uses: actions/checkout@v4
+
+    - name: 安装依赖并编译 🔧
+      run: |
+        npm install
+        npm run build
+
+    - name: 部署 🚀
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        # 若上面 GITHUB_TOKEN 的权限满足不了需求，就在这配置一个自己的 token
+        # ssh-key: ${{ secrets.ACCESS_TOKEN }}
+        branch: gh-pages
+        folder: dist
