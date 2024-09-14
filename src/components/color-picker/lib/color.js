@@ -151,8 +151,6 @@ function Color(options) {
   options = options || {};
   this.enableAlpha = options.enableAlpha || false;
   this.format = (options.format || 'hex').toLowerCase();
-
-  this.doOnChange();
 }
 Color.prototype.set = function (prop, value) {
   if (arguments.length === 1 && typeof prop === 'object') {
@@ -185,9 +183,9 @@ Color.prototype.fromString = function (value) {
     this._hue = 0;
     this._saturation = 0;
     this._value = 100;
-
-    this.doOnChange();
-    return;
+    this._alpha = 100;
+    this.value = '';
+    return this.value;
   }
 
   const fromHSV = (h, s, v) => {
@@ -269,6 +267,7 @@ Color.prototype.fromString = function (value) {
     const { h, s, v } = rgb2hsv(r, g, b);
     fromHSV(h, s, v);
   }
+  return this.value;
 };
 
 Color.prototype.compare = function (color) {

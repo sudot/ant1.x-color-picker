@@ -50,12 +50,12 @@
       />
     </template>
     <a-input
-      :value="customInput"
+      :value="currentColor"
       :size="size"
       allow-clear
       @pressEnter="onChanged($event.target.value)"
       @blur="onChanged($event.target.value)"
-      @change="onInput($event.target.value)"
+      @change="onChanged($event.target.value)"
     >
       <span
         slot="prefix"
@@ -117,7 +117,6 @@ export default {
         format: this.colorFormat,
       }),
       showPicker: false,
-      customInput: '',
       selectedFormat: '',
       selectedColor: new Color({
         enableAlpha: true,
@@ -132,11 +131,10 @@ export default {
       return this.color.value;
     },
     displayedColor() {
-      if (this.selectedFormat == this.customInput) {
+      if (this.selectedFormat == this.colorFormat) {
         return this.currentColor;
       }
-      this.selectedColor.fromString(this.customInput);
-      return this.selectedColor.value;
+      return this.selectedColor.fromString(this.currentColor);
     },
   },
   watch: {
@@ -167,7 +165,6 @@ export default {
     },
     currentColor: {
       handler(newVal) {
-        this.customInput = newVal;
         this.$emit('change', newVal);
       },
     },
@@ -186,14 +183,6 @@ export default {
   methods: {
     onChanged(value) {
       this.color.fromString(value);
-    },
-    onInput(value) {
-      if (value) return;
-      this.onChanged(value);
-      this.$nextTick(() => {
-        this.customInput = '';
-        this.$emit('change', '');
-      });
     },
   },
 };

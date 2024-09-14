@@ -72,6 +72,12 @@
             </a-col>
           </a-row>
         </a-form-model-item>
+        <a-form-model-item label="外部操作">
+          <a-button @click="onClickSetColor('#FF0000')">设置固定颜色</a-button>
+          <a-button style="margin-left: 10px" @click="onClickSetColor('')">
+            清空值
+          </a-button>
+        </a-form-model-item>
       </a-form-model>
       <h2>使用方法</h2>
       <ol>
@@ -239,6 +245,11 @@ export default {
         '#FFFFFF00',
       ],
     };
+  },
+  methods: {
+    onClickSetColor(color) {
+      this.ruleForm.color = color;
+    },
   },
   mounted() {
     hljs.highlightAll();
